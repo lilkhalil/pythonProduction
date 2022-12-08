@@ -1,0 +1,47 @@
+<html>
+<head>
+    <title>HTML Service</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <h2>App Page</h2>
+    <h3>HTML Text Selector</h3>
+    <form>
+        <input id="url" name="url" class="form-control">
+        <input type="submit" class="btn btn-success" value="RUN" onsubmit="getText()">
+    </form>
+    <div>
+        <p>Result: </p>
+        <ul id="result"></ul>
+    </div>
+    <script>
+        function updateResult(data) {
+            var ul = document.getElementById("result");
+            JSON.parse(data);
+            var text = data.text;
+            for (let i = 0; i < text.length; i++) {
+                var element = document.createElement("li");
+                element.setAttribute("value", text[i]);
+                ul.appendChild(element);
+            }
+        }
+        function getText() {
+            var urlName = document.getElementById("url").value;
+            $.ajax({
+                method: 'POST',
+                url: 'http:/nginxserver/api/',
+                data: {url: urlName},
+                dataType: "json",
+                success: function(data) {
+                    updateResult(data);
+                },
+                error: function() {
+                    alert('Error occured');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
